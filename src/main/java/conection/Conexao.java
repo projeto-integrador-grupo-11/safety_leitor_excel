@@ -19,9 +19,9 @@ public class Conexao {
 
         public static Connection getConexao() throws Exception {
             return DriverManager.getConnection(
-                    props.getProperty("db.url"),
-                    props.getProperty("db.user"),
-                    props.getProperty("db.password")
+                    props.getProperty("98.85.170.106"),
+                    props.getProperty("root"),
+                    props.getProperty("urubu100")
             );
         }
 }
