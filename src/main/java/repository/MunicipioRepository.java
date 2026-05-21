@@ -8,13 +8,30 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 public class MunicipioRepository {
     private LogRepository logRepo = new LogRepository();
     private static final Logger log = LogManager.getLogger(MunicipioRepository.class);
 
+    public void limpar() {
+        try (Connection conn = Conexao.getConexao();
+             Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("DELETE FROM municipio");
+            log.info("Tabela municipio limpa antes da carga.");
+        } catch (Exception e) {
+            log.error("Erro ao limpar municipio", e);
+            logRepo.salvar("WARN", "Erro ao limpar municipio: " + e.getMessage());
+        }
+    }
+
     public void salvarLista(List<Municipio> municipios) {
+
+        if (municipios == null || municipios.isEmpty()) {
+            log.info("Nenhum município para salvar — lista vazia.");
+            return;
+        }
 
         String sql = "INSERT INTO municipio (nome, idhm_geral, renda, educacao, longevidade) \n" +
                 "VALUES (?, ?, ?, ?, ?);";
@@ -35,7 +52,7 @@ public class MunicipioRepository {
                 log.info("Municipio salvo: {}", p);
             }
 
-            log.info("Todas os municipios foram inseridos no banco!");
+            log.info("Todos os municipios foram inseridos no banco! Total: {}", municipios.size());
 
         } catch (Exception e) {
             log.error("Erro ao salvar no banco", e);
