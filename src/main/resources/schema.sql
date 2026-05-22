@@ -4,14 +4,18 @@
 -- Conexão padrão: config.properties (jdbc:mysql://.../safety_intelligence)
 -- =====================================================================
 
--- Tabela legada usada pelo MunicipioRepository (IDHM)
+-- IDHM municipal por UF (planilha idhm_municipios.xlsx)
 CREATE TABLE IF NOT EXISTS municipio (
     id          INT AUTO_INCREMENT PRIMARY KEY,
+    uf          CHAR(2)      NOT NULL,
     nome        VARCHAR(120) NOT NULL,
     idhm_geral  DOUBLE,
     renda       DOUBLE,
     educacao    DOUBLE,
-    longevidade DOUBLE
+    longevidade DOUBLE,
+    INDEX idx_municipio_uf           (uf),
+    INDEX idx_municipio_uf_nome        (uf, nome),
+    INDEX idx_municipio_uf_idhm        (uf, idhm_geral DESC)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 
 -- População municipal (planilha populacao_municipios_2025.xls)

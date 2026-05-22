@@ -94,6 +94,225 @@ public class LeitorExcel {
     }
 
     /**
+     * Lê idhm_municipios.xlsx (todos os estados).
+     *
+     * Layout ranking nacional (idhm_municipios.xlsx):
+     *  Ranking, Município (UF), IDHM, Renda, Longevidade, Educação
+     * Ou layout com coluna UF explícita.
+     * Fallback legado: data_idhm.xlsx (SP).
+     */
+    public List<Municipio> lerIdhmMunicipios(String caminhoArquivo) {
+        List<Municipio> municipios = new ArrayList<>();
+
+        log.info("Iniciando leitura de IDHM municipal: {}", caminhoArquivo);
+        logRepo.salvar("INFO", "Iniciando leitura de IDHM municipal: " + caminhoArquivo);
+
+        try (
+                InputStream arquivo = new FileInputStream(caminhoArquivo);
+                Workbook workbook = WorkbookFactory.create(arquivo)
+        ) {
+            Sheet sheet = workbook.getSheetAt(0);
+            int linhaCabecalho = detectarLinhaCabecalhoIdhm(sheet);
+            Map<String, Integer> colunas = detectarColunasIdhm(sheet, linhaCabecalho);
+            String layout = "legado";
+            if (colunas.containsKey("_layout")) {
+                int layoutCode = colunas.get("_layout");
+                if (layoutCode == 1) layout = "uf";
+                else if (layoutCode == 2) layout = "ranking";
+            }
+
+            int contador = 0;
+            for (Row row : sheet) {
+                if (row == null) continue;
+                if (row.getRowNum() <= linhaCabecalho) continue;
+
+                try {
+                    String uf;
+                    String nome;
+                    Double idhmGeral;
+                    Double renda;
+                    Double educacao;
+                    Double longevidade;
+
+                    if ("legado".equals(layout)) {
+                        uf = "SP";
+                        nome = textoCelula(row.getCell(0));
+                        idhmGeral = numeroDouble(row.getCell(2));
+                        renda = numeroDouble(row.getCell(4));
+                        educacao = numeroDouble(row.getCell(6));
+                        longevidade = numeroDouble(row.getCell(8));
+                    } else if ("ranking".equals(layout)) {
+                        String nomeBruto = textoCelula(row.getCell(colunas.get("nome")));
+                        uf = extrairUfDoNome(nomeBruto);
+                        if (uf == null) continue;
+                        nome = nomeBruto;
+                        idhmGeral = numeroDouble(row.getCell(colunas.get("idhm")));
+                        renda = numeroDouble(row.getCell(colunas.get("renda")));
+                        longevidade = numeroDouble(row.getCell(colunas.get("longevidade")));
+                        educacao = numeroDouble(row.getCell(colunas.get("educacao")));
+                    } else {
+                        uf = textoCelula(row.getCell(colunas.get("uf")));
+                        if (uf == null) continue;
+                        uf = uf.trim().toUpperCase();
+                        if (uf.length() != 2) continue;
+
+                        nome = textoCelula(row.getCell(colunas.get("nome")));
+                        idhmGeral = numeroDouble(row.getCell(colunas.get("idhm")));
+                        renda = numeroDouble(row.getCell(colunas.get("renda")));
+                        educacao = numeroDouble(row.getCell(colunas.get("educacao")));
+                        longevidade = numeroDouble(row.getCell(colunas.get("longevidade")));
+                    }
+
+                    if (nome == null || nome.isBlank()) continue;
+                    nome = limparNomeMunicipio(nome);
+                    if (nome.isBlank()) continue;
+                    if (idhmGeral == null || idhmGeral <= 0) continue;
+
+                    municipios.add(new Municipio(uf, nome, idhmGeral, renda, educacao, longevidade));
+                    contador++;
+                } catch (Exception e) {
+                    log.warn("Erro ao processar linha {} de {}: {}",
+                            row.getRowNum(), caminhoArquivo, e.getMessage());
+                }
+            }
+
+            log.info("IDHM municipal lido: {} municípios.", contador);
+            logRepo.salvar("INFO", "IDHM municipal lido: " + contador);
+            System.out.println("------------------------------------------------------------------------");
+        } catch (Exception e) {
+            log.error("Erro ao abrir arquivo {}: {}", caminhoArquivo, e.getMessage());
+            logRepo.salvar("ERROR", "Erro ao abrir arquivo " + caminhoArquivo + ": " + e.getMessage());
+        }
+
+        return municipios;
+    }
+
+    private String extrairUfDoNome(String nome) {
+        if (nome == null) return null;
+        java.util.regex.Matcher m = java.util.regex.Pattern
+                .compile("\\(([A-Z]{2})\\)\\s*$", java.util.regex.Pattern.CASE_INSENSITIVE)
+                .matcher(nome.trim());
+        return m.find() ? m.group(1).toUpperCase() : null;
+    }
+
+    private int detectarLinhaCabecalhoIdhm(Sheet sheet) {
+        int limite = Math.min(sheet.getLastRowNum(), 10);
+        for (int i = 0; i <= limite; i++) {
+            Row row = sheet.getRow(i);
+            if (row == null) continue;
+            for (int c = 0; c <= 8; c++) {
+                String texto = normalizarHeader(textoCelula(row.getCell(c)));
+                if ("uf".equals(texto) || texto.contains("municip") || texto.contains("ranking")) {
+                    return i;
+                }
+            }
+        }
+        return 0;
+    }
+
+    private Map<String, Integer> detectarColunasIdhm(Sheet sheet, int linhaCabecalho) {
+        Map<String, Integer> mapa = new HashMap<>();
+        Row header = sheet.getRow(linhaCabecalho);
+        if (header == null) {
+            mapa.put("_layout", 2);
+            mapa.put("nome", 1);
+            mapa.put("idhm", 2);
+            mapa.put("renda", 3);
+            mapa.put("longevidade", 4);
+            mapa.put("educacao", 5);
+            return mapa;
+        }
+
+        boolean temUf = false;
+        boolean temRanking = false;
+
+        for (int c = 0; c <= header.getLastCellNum(); c++) {
+            String texto = normalizarHeader(textoCelula(header.getCell(c)));
+            if (texto.isEmpty()) continue;
+
+            if ("uf".equals(texto) || texto.endsWith(" uf")) {
+                mapa.put("uf", c);
+                temUf = true;
+            } else if (texto.contains("ranking")) {
+                temRanking = true;
+            } else if (texto.contains("municip") || "nome".equals(texto)) {
+                mapa.put("nome", c);
+            } else if (texto.contains("longev")) {
+                mapa.put("longevidade", c);
+            } else if (texto.contains("educ")) {
+                mapa.put("educacao", c);
+            } else if (texto.contains("renda")) {
+                mapa.put("renda", c);
+            } else if (texto.contains("idhm") && !mapa.containsKey("idhm")) {
+                mapa.put("idhm", c);
+            }
+        }
+
+        if (temUf) {
+            mapa.put("_layout", 1);
+            if (!mapa.containsKey("nome")) mapa.put("nome", mapa.get("uf") + 1);
+            if (!mapa.containsKey("idhm")) mapa.put("idhm", mapa.get("nome") + 1);
+            if (!mapa.containsKey("renda")) mapa.put("renda", mapa.get("idhm") + 1);
+            if (!mapa.containsKey("educacao")) mapa.put("educacao", mapa.get("renda") + 1);
+            if (!mapa.containsKey("longevidade")) mapa.put("longevidade", mapa.get("educacao") + 1);
+            return mapa;
+        }
+
+        if (temRanking || mapa.containsKey("nome")) {
+            mapa.put("_layout", 2);
+            if (!mapa.containsKey("nome")) mapa.put("nome", 1);
+            if (!mapa.containsKey("idhm")) mapa.put("idhm", 2);
+            if (!mapa.containsKey("renda")) mapa.put("renda", 3);
+            if (!mapa.containsKey("longevidade")) mapa.put("longevidade", 4);
+            if (!mapa.containsKey("educacao")) mapa.put("educacao", 5);
+            return mapa;
+        }
+
+        mapa.put("_layout", 0);
+        return mapa;
+    }
+
+    private String normalizarHeader(String valor) {
+        if (valor == null) return "";
+        return Normalizer.normalize(valor.trim().toLowerCase(), Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+                .replaceAll("\\s+", " ")
+                .trim();
+    }
+
+    private String limparNomeMunicipio(String nome) {
+        return nome.replaceAll("\\s*\\([A-Z]{2}\\)\\s*$", "").trim();
+    }
+
+    private Double numeroDouble(Cell cell) {
+        if (cell == null) return null;
+        try {
+            switch (cell.getCellType()) {
+                case NUMERIC:
+                    return cell.getNumericCellValue();
+                case STRING:
+                    String s = cell.getStringCellValue();
+                    if (s == null || s.isBlank()) return null;
+                    s = s.trim().replace(",", ".");
+                    return Double.parseDouble(s);
+                case FORMULA:
+                    try {
+                        return cell.getNumericCellValue();
+                    } catch (IllegalStateException ex) {
+                        String s = cell.getStringCellValue();
+                        if (s == null || s.isBlank()) return null;
+                        s = s.trim().replace(",", ".");
+                        return Double.parseDouble(s);
+                    }
+                default:
+                    return null;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
      * Lê uma planilha banco_seguranca_YYYY.xlsx e devolve as ocorrências mensais
      * de latrocínio e homicídio doloso (mesmas categorias usadas pelo backend Node).
      *

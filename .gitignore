@@ -42,6 +42,7 @@ build/
 # O Main.java baixa essas planilhas do bucket 17042026-safety em runtime.
 # Não versionar, são dados brutos.
 /data_idhm.xlsx
+/idhm_municipios.xlsx
 /indicadores_seguranca_publica.xlsx
 /populacao_municipios_2025.xls
 /populacao_federacao_2025.xls

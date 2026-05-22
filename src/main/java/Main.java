@@ -26,9 +26,9 @@ public class Main {
     public static void main(String[] args) {
 
         // Credenciais da sessão do AWS Academy
-        System.setProperty("aws.accessKeyId", "ASIA3STB4UX4R6RB6URB");
-        System.setProperty("aws.secretAccessKey", "LmqKm17RVSxPGFHWRl8mTnGXNht7Ix0CtxdCHdC9");
-        System.setProperty("aws.sessionToken", "IQoJb3JpZ2luX2VjEDIaCXVzLXdlc3QtMiJHMEUCIQDZjz96TLMQWmBTMgWT6WfzrQryQaxs3tM2IL8UP0n21gIgbtj2yE9TUWU0wB5DW5NJbEYVOuVvRxxEwAPx8UEGL1wqvAII+///////////ARAAGgw3OTU4NDc5OTI4MjUiDJH+l9LtT5kK6s6QhyqQAvNQD+EZolFjQV88gKA8hJAdDohb543ETlkk2go5+vNb7koj3UZP0n5I0Y5WRmvB48Rl+RC3SQewscorZKirHmtXxr7hcVrqyoA9mZwVuaOL5w6haoPn4KqgCy5e6e4Q8Ehq2nEcF/BcXQjTRJG2PkHH+lObYQeCOej0Xzm20x44AwLzRc2DwvnmdCaZOYqlT7KrOOJtWA5RT18G4O6yRzkULzcKfp1rC/E/5UhakZ4r2+ryYYmgzDuSKQwERLhm6+TtwR6kr/Z6Rw39/APMnjBwOWVoaOfzu9dJRcuDkdfx6ncHW3Ks2NYO7BZLrHEWG1iCqbyZKtYP0S05z3lNA+4SbblepkgR+BH7dmJlnlYyMOPQudAGOp0Ba36Ey9JZV2c5Xgxm76sxvz+wcZQ1BgGkWsNPHGejziXzhPPvu7MqMqMKxOpwPU++ZM0wsTCeZYFlHGmSOmMT853uGthSadOporQiUdLXXXxZuWZO3g5eyss3oCegkEAtOp5XZ4z0va/qockz40/k5kJRQNq9o7C3gUJB+PPFv3k71gM/c62YyA3Pmgiz3v7udEBwO01ibGhag/hR5A==");
+        System.setProperty("aws.accessKeyId", "ASIA3STB4UX4T4545B2W");
+        System.setProperty("aws.secretAccessKey", "RfOOc7t3OxvyAHTcKYGrtTJerAImYZCTGJ5FCnWX");
+        System.setProperty("aws.sessionToken", "IQoJb3JpZ2luX2VjEFcaCXVzLXdlc3QtMiJGMEQCICSfvwge+R6ncSbQZ8KjgxoT7CDuNiAqzO9MnheM43rMAiBzCpSNQN/Tna/KWUFH3Ez4G2+KW8FNhufOQAD7JaqYYSqzAgggEAAaDDc5NTg0Nzk5MjgyNSIMxLqLas71iSB6j+ltKpACz4gKa8QHYKvQFOZJUiHWFBYz3rDtY73QtVq7zUebwSHxk3m7jfrBmW4e+c6VSydBtu5znQ5oFAWGcx9K/b+1rqnI5Nic67Tcu70vZJHWuWLTMC2Vxgzh/HSKEMi1vBMAfX1Iu3fXpqIxR9fIzeFNNYLfR1hq6Lv1g0/hGg0j3YKf3KYfRIfcsgeNfhANC7bdFlWyMCHcfE7uYTeJt5oP9bVSUYaFr4XSC02C7SrEUB4LPwWSBxp6e/0XpjV8+2bz6roEgHg11v7nmOhELYMkIISnGrW2IQfXGo2crnTtABUAqoY5bSbr7zX2YGRrq+VQ8KSh8mLezxbNYj8B4Z4uOcaKEN5bHSPKFdTYQ8N2xMIw79LB0AY6ngFjofgDvGxBS8YO94Zeci1alX1G3oTR0JKZokjXfLJqAGXjJ1nbSqGsPLUl+kiBP3bn4XMkhPaGVlL6tVNtxMfIAWYDDdwKWIOKNN47z/2YdywIojYhCi4yx8aeJo7narI9hICmUYd/TMFkFs6M1VrV2TzsCnvyBg1BEB15rOPVAGbHyHWgE1rafF4jsVtQ0131szBY/dwphVU44voa6Q==");
 
         LeitorExcel leitor = new LeitorExcel();
         MunicipioRepository municipioRepo = new MunicipioRepository();
@@ -43,9 +43,13 @@ public class Main {
         listarObjetos(s3Client, bucketName);
         baixarObjetos(s3Client, bucketName);
 
-        // 1) IDHM (data_idhm.xlsx) — fluxo original
-        System.out.println("\n==> Carregando IDHM (data_idhm.xlsx)");
-        List<Municipio> municipios = leitor.ler("data_idhm.xlsx");
+        // 1) IDHM municipal por UF (idhm_municipios.xlsx)
+        System.out.println("\n==> Carregando IDHM municipal (idhm_municipios.xlsx)");
+        List<Municipio> municipios = leitor.lerIdhmMunicipios("idhm_municipios.xlsx");
+        if (municipios.isEmpty()) {
+            System.out.println("  [fallback] Tentando data_idhm.xlsx (legado SP)…");
+            municipios = leitor.ler("data_idhm.xlsx");
+        }
         if (!municipios.isEmpty()) {
             municipioRepo.limpar();
             municipioRepo.salvarLista(municipios);
