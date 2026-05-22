@@ -3,6 +3,7 @@ package model;
 public class Municipio {
 
     private Long id;
+    private String uf;
     private String nome;
     private Double idhmGeral;
     private Double renda;
@@ -12,7 +13,8 @@ public class Municipio {
     public Municipio() {
     }
 
-    public Municipio(String nome, Double idhmGeral, Double renda, Double educacao, Double longevidade) {
+    public Municipio(String uf, String nome, Double idhmGeral, Double renda, Double educacao, Double longevidade) {
+        this.uf = uf;
         this.educacao = educacao;
         this.idhmGeral = idhmGeral;
         this.longevidade = longevidade;
@@ -20,9 +22,21 @@ public class Municipio {
         this.renda = renda;
     }
 
+    public Municipio(String nome, Double idhmGeral, Double renda, Double educacao, Double longevidade) {
+        this("SP", nome, idhmGeral, renda, educacao, longevidade);
+    }
+
 
     public Municipio(String nome) {
         this.nome = nome;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
     }
 
     public Double getEducacao() {
@@ -76,7 +90,8 @@ public class Municipio {
     @Override
     public String toString() {
         return "municipio{" +
-                "educacao=" + educacao +
+                "uf='" + uf + '\'' +
+                ", educacao=" + educacao +
                 ", id=" + id +
                 ", nome='" + nome + '\'' +
                 ", idhmGeral=" + idhmGeral +

@@ -33,19 +33,20 @@ public class MunicipioRepository {
             return;
         }
 
-        String sql = "INSERT INTO municipio (nome, idhm_geral, renda, educacao, longevidade) \n" +
-                "VALUES (?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO municipio (uf, nome, idhm_geral, renda, educacao, longevidade) \n" +
+                "VALUES (?, ?, ?, ?, ?, ?);";
 
         try (Connection conn = Conexao.getConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             for (Municipio p : municipios) {
 
-                stmt.setString(1, p.getNome());
-                stmt.setDouble(2,p.getIdhmGeral());
-                stmt.setDouble(3,p.getRenda());
-                stmt.setDouble(4,p.getEducacao());
-                stmt.setDouble(5,p.getLongevidade());
+                stmt.setString(1, p.getUf());
+                stmt.setString(2, p.getNome());
+                stmt.setDouble(3,p.getIdhmGeral());
+                stmt.setDouble(4,p.getRenda());
+                stmt.setDouble(5,p.getEducacao());
+                stmt.setDouble(6,p.getLongevidade());
 
                 stmt.executeUpdate();
 
