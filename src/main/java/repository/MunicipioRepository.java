@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.List;
 
 public class MunicipioRepository {
@@ -43,10 +44,10 @@ public class MunicipioRepository {
 
                 stmt.setString(1, p.getUf());
                 stmt.setString(2, p.getNome());
-                stmt.setDouble(3,p.getIdhmGeral());
-                stmt.setDouble(4,p.getRenda());
-                stmt.setDouble(5,p.getEducacao());
-                stmt.setDouble(6,p.getLongevidade());
+                setDoubleOrNull(stmt, 3, p.getIdhmGeral());
+                setDoubleOrNull(stmt, 4, p.getRenda());
+                setDoubleOrNull(stmt, 5, p.getEducacao());
+                setDoubleOrNull(stmt, 6, p.getLongevidade());
 
                 stmt.executeUpdate();
 
@@ -58,6 +59,14 @@ public class MunicipioRepository {
         } catch (Exception e) {
             log.error("Erro ao salvar no banco", e);
             logRepo.salvar("WARM", "Erro ao salvar no banco");
+        }
+    }
+
+    private static void setDoubleOrNull(PreparedStatement stmt, int index, Double value) throws Exception {
+        if (value == null) {
+            stmt.setNull(index, Types.DOUBLE);
+        } else {
+            stmt.setDouble(index, value);
         }
     }
 }

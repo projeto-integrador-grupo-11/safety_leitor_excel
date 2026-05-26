@@ -26,9 +26,9 @@ public class Main {
     public static void main(String[] args) {
 
         // Credenciais da sessão do AWS Academy
-        System.setProperty("aws.accessKeyId", "ASIA3STB4UX4T4545B2W");
-        System.setProperty("aws.secretAccessKey", "RfOOc7t3OxvyAHTcKYGrtTJerAImYZCTGJ5FCnWX");
-        System.setProperty("aws.sessionToken", "IQoJb3JpZ2luX2VjEFcaCXVzLXdlc3QtMiJGMEQCICSfvwge+R6ncSbQZ8KjgxoT7CDuNiAqzO9MnheM43rMAiBzCpSNQN/Tna/KWUFH3Ez4G2+KW8FNhufOQAD7JaqYYSqzAgggEAAaDDc5NTg0Nzk5MjgyNSIMxLqLas71iSB6j+ltKpACz4gKa8QHYKvQFOZJUiHWFBYz3rDtY73QtVq7zUebwSHxk3m7jfrBmW4e+c6VSydBtu5znQ5oFAWGcx9K/b+1rqnI5Nic67Tcu70vZJHWuWLTMC2Vxgzh/HSKEMi1vBMAfX1Iu3fXpqIxR9fIzeFNNYLfR1hq6Lv1g0/hGg0j3YKf3KYfRIfcsgeNfhANC7bdFlWyMCHcfE7uYTeJt5oP9bVSUYaFr4XSC02C7SrEUB4LPwWSBxp6e/0XpjV8+2bz6roEgHg11v7nmOhELYMkIISnGrW2IQfXGo2crnTtABUAqoY5bSbr7zX2YGRrq+VQ8KSh8mLezxbNYj8B4Z4uOcaKEN5bHSPKFdTYQ8N2xMIw79LB0AY6ngFjofgDvGxBS8YO94Zeci1alX1G3oTR0JKZokjXfLJqAGXjJ1nbSqGsPLUl+kiBP3bn4XMkhPaGVlL6tVNtxMfIAWYDDdwKWIOKNN47z/2YdywIojYhCi4yx8aeJo7narI9hICmUYd/TMFkFs6M1VrV2TzsCnvyBg1BEB15rOPVAGbHyHWgE1rafF4jsVtQ0131szBY/dwphVU44voa6Q==");
+        System.setProperty("aws.accessKeyId", "ASIA3STB4UX45XUSGYZ7");
+        System.setProperty("aws.secretAccessKey", "tAOrc9g2Irq+fjd2AxMg41qSG2qT2ewf8XWdvPug");
+        System.setProperty("aws.sessionToken", "IQoJb3JpZ2luX2VjEKr//////////wEaCXVzLXdlc3QtMiJHMEUCIQC77mYi4w1UM/+IU3sPtmAb/GjbyrXCW8GAx6K47/Sv1AIgQGIXIKlGTjWss8qa2uGEWHF3siiX042hs3U9Pp42fI8qswIIcxAAGgw3OTU4NDc5OTI4MjUiDOhYsr8YcSiVfifGjiqQAg6DpA9sRKBYW7OSZf1sqwiunYoOKMv7jqXhtR7OQ3VS6i6XR+RT6tnViiIUzwaHJMYveZrkFBCLJRkURJpmGCPEzk578TrqmjJ7gasnaHNRzIIyAh13HujlQbTOZHYB/ODf9uICXMSxfgDh2vtD4CTqxuiXzshhjcfb8J3cI7FoK2pXE19E2aczZbtOgAK1e0/DqcrkcHMWo8HA3fTwZn0Y3puskFHVWvb737rNNfslgfSP1cfFhlQdhYsr3vtuMii4nsV6TZQIuJKKHO+FbKY5/mb41fl6XgGs4z5/koiSZK/xZPnZpFFn6HYeDczCKY9LZYQQg7O9t+ypxg9ZuIC0NEOJEXyCT/jFRtFuAgXgMJj609AGOp0BT+UVMIQBxC2eHjRgE3xwRQ0vwziiTi9A+lbU60VBmywyVluis2q8E84hEoWmlioMIk6NY+0lGOOn7HIBd/2m78+qnjDO5DB825Yfb4VMrgk3f7OSv5gJ7wjjmXIZVBi2YPUBGjS8XAolREgzzZmRYBWLYIZ2z9uIUhoOL1wfVGqSe8XVOX5qzJt3qzA3NofB995DDfaqdaEjEzrV/w==");
 
         LeitorExcel leitor = new LeitorExcel();
         MunicipioRepository municipioRepo = new MunicipioRepository();
