@@ -290,11 +290,12 @@ public class LeitorExcel {
             switch (cell.getCellType()) {
                 case NUMERIC:
                     return cell.getNumericCellValue();
-                case STRING:
+                case STRING: {
                     String s = cell.getStringCellValue();
                     if (s == null || s.isBlank()) return null;
                     s = s.trim().replace(",", ".");
                     return Double.parseDouble(s);
+                }
                 case FORMULA:
                     try {
                         return cell.getNumericCellValue();
