@@ -45,10 +45,7 @@ build/
 /idhm_municipios.xlsx
 /indicadores_seguranca_publica.xlsx
 /populacao_municipios_2025.xls
-/populacao_federacao_2025.xls
 /banco_seguranca_*.xlsx
-/ocorrencia_mensal_criminal.xlsx
-/estimativa_pop_indicadores_esp*.xlsx
 
 ### Logs ###
 /logs/
