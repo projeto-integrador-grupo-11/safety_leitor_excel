@@ -2,30 +2,25 @@ package repository;
 
 import conection.Conexao;
 import model.PopulacaoMunicipio;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 
-public class PopulacaoMunicipioRepository {
+public class PopulacaoMunicipioRepository extends RepositorioBase {
 
-    private static final Logger log = LogManager.getLogger(PopulacaoMunicipioRepository.class);
     private static final int TAMANHO_LOTE = 1000;
 
-    private final LogRepository logRepo = new LogRepository();
+    public PopulacaoMunicipioRepository() {
+        super();
+    }
+
+    public PopulacaoMunicipioRepository(LogRepository logRepo) {
+        super(logRepo);
+    }
 
     public void limpar() {
-        try (Connection conn = Conexao.getConexao();
-             Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("DELETE FROM populacao_municipio");
-            log.info("Tabela populacao_municipio limpa antes da carga.");
-        } catch (Exception e) {
-            log.error("Erro ao limpar populacao_municipio", e);
-            logRepo.salvar("WARN", "Erro ao limpar populacao_municipio: " + e.getMessage());
-        }
+        limpar("populacao_municipio");
     }
 
     public void salvarLista(List<PopulacaoMunicipio> populacoes) {

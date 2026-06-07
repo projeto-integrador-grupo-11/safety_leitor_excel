@@ -1,9 +1,8 @@
 package model;
 
-public class Municipio {
+public class Municipio extends EntidadeUf {
 
     private Long id;
-    private String uf;
     private String nome;
     private Double idhmGeral;
     private Double renda;
@@ -14,7 +13,7 @@ public class Municipio {
     }
 
     public Municipio(String uf, String nome, Double idhmGeral, Double renda, Double educacao, Double longevidade) {
-        this.uf = uf;
+        super(uf);
         this.educacao = educacao;
         this.idhmGeral = idhmGeral;
         this.longevidade = longevidade;
@@ -29,14 +28,6 @@ public class Municipio {
 
     public Municipio(String nome) {
         this.nome = nome;
-    }
-
-    public String getUf() {
-        return uf;
-    }
-
-    public void setUf(String uf) {
-        this.uf = uf;
     }
 
     public Double getEducacao() {

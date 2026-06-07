@@ -38,7 +38,17 @@ public class LeitorExcel {
 
     private static final String ABA_OCORRENCIAS = "Ocorrências";
 
-    private final LogRepository logRepo = new LogRepository();
+    private final LogRepository logRepo;
+
+    /** Composição: o leitor cria e é dono do seu próprio LogRepository. */
+    public LeitorExcel() {
+        this.logRepo = new LogRepository();
+    }
+
+    /** Agregação: o leitor reutiliza um LogRepository compartilhado. */
+    public LeitorExcel(LogRepository logRepo) {
+        this.logRepo = logRepo;
+    }
 
     /**
      * Mantém a leitura original da planilha de IDHM (data_idhm.xlsx).

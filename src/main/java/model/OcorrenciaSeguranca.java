@@ -1,9 +1,7 @@
 package model;
 
-public class OcorrenciaSeguranca {
+public class OcorrenciaSeguranca extends EntidadeMunicipal {
 
-    private String uf;
-    private String nomeMunicipio;
     private String evento;
     private int anoRef;
     private int mesRef;
@@ -14,28 +12,11 @@ public class OcorrenciaSeguranca {
 
     public OcorrenciaSeguranca(String uf, String nomeMunicipio, String evento,
                                int anoRef, int mesRef, int qtdVitimas) {
-        this.uf = uf;
-        this.nomeMunicipio = nomeMunicipio;
+        super(uf, nomeMunicipio);
         this.evento = evento;
         this.anoRef = anoRef;
         this.mesRef = mesRef;
         this.qtdVitimas = qtdVitimas;
-    }
-
-    public String getUf() {
-        return uf;
-    }
-
-    public void setUf(String uf) {
-        this.uf = uf;
-    }
-
-    public String getNomeMunicipio() {
-        return nomeMunicipio;
-    }
-
-    public void setNomeMunicipio(String nomeMunicipio) {
-        this.nomeMunicipio = nomeMunicipio;
     }
 
     public String getEvento() {

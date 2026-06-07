@@ -2,30 +2,25 @@ package repository;
 
 import conection.Conexao;
 import model.OcorrenciaSeguranca;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 
-public class OcorrenciaSegurancaRepository {
+public class OcorrenciaSegurancaRepository extends RepositorioBase {
 
-    private static final Logger log = LogManager.getLogger(OcorrenciaSegurancaRepository.class);
     private static final int TAMANHO_LOTE = 1000;
 
-    private final LogRepository logRepo = new LogRepository();
+    public OcorrenciaSegurancaRepository() {
+        super();
+    }
+
+    public OcorrenciaSegurancaRepository(LogRepository logRepo) {
+        super(logRepo);
+    }
 
     public void limpar() {
-        try (Connection conn = Conexao.getConexao();
-             Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("DELETE FROM ocorrencia_seguranca");
-            log.info("Tabela ocorrencia_seguranca limpa antes da carga.");
-        } catch (Exception e) {
-            log.error("Erro ao limpar ocorrencia_seguranca", e);
-            logRepo.salvar("WARN", "Erro ao limpar ocorrencia_seguranca: " + e.getMessage());
-        }
+        limpar("ocorrencia_seguranca");
     }
 
     public void salvarLista(List<OcorrenciaSeguranca> ocorrencias) {

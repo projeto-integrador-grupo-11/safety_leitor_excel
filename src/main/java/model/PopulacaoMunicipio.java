@@ -1,9 +1,7 @@
 package model;
 
-public class PopulacaoMunicipio {
+public class PopulacaoMunicipio extends EntidadeMunicipal {
 
-    private String uf;
-    private String nomeMunicipio;
     private int populacao;
     private int ano;
 
@@ -11,26 +9,9 @@ public class PopulacaoMunicipio {
     }
 
     public PopulacaoMunicipio(String uf, String nomeMunicipio, int populacao, int ano) {
-        this.uf = uf;
-        this.nomeMunicipio = nomeMunicipio;
+        super(uf, nomeMunicipio);
         this.populacao = populacao;
         this.ano = ano;
-    }
-
-    public String getUf() {
-        return uf;
-    }
-
-    public void setUf(String uf) {
-        this.uf = uf;
-    }
-
-    public String getNomeMunicipio() {
-        return nomeMunicipio;
-    }
-
-    public void setNomeMunicipio(String nomeMunicipio) {
-        this.nomeMunicipio = nomeMunicipio;
     }
 
     public int getPopulacao() {

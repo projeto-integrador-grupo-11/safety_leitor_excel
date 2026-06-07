@@ -1,8 +1,7 @@
 package model;
 
-public class IndicadorSeguranca {
+public class IndicadorSeguranca extends EntidadeUf {
 
-    private String uf;
     private String tipo;
     private int ano;
     private int quantidade;
@@ -11,18 +10,10 @@ public class IndicadorSeguranca {
     }
 
     public IndicadorSeguranca(String uf, String tipo, int ano, int quantidade) {
-        this.uf = uf;
+        super(uf);
         this.tipo = tipo;
         this.ano = ano;
         this.quantidade = quantidade;
-    }
-
-    public String getUf() {
-        return uf;
-    }
-
-    public void setUf(String uf) {
-        this.uf = uf;
     }
 
     public String getTipo() {

@@ -2,29 +2,24 @@ package repository;
 
 import conection.Conexao;
 import model.Municipio;
-import model.Pessoa;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.List;
 
-public class MunicipioRepository {
-    private LogRepository logRepo = new LogRepository();
-    private static final Logger log = LogManager.getLogger(MunicipioRepository.class);
+public class MunicipioRepository extends RepositorioBase {
+
+    public MunicipioRepository() {
+        super();
+    }
+
+    public MunicipioRepository(LogRepository logRepo) {
+        super(logRepo);
+    }
 
     public void limpar() {
-        try (Connection conn = Conexao.getConexao();
-             Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("DELETE FROM municipio");
-            log.info("Tabela municipio limpa antes da carga.");
-        } catch (Exception e) {
-            log.error("Erro ao limpar municipio", e);
-            logRepo.salvar("WARN", "Erro ao limpar municipio: " + e.getMessage());
-        }
+        limpar("municipio");
     }
 
     public void salvarLista(List<Municipio> municipios) {

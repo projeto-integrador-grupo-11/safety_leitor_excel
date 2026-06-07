@@ -4,6 +4,7 @@ import model.Municipio;
 import model.OcorrenciaSeguranca;
 import model.PopulacaoMunicipio;
 import repository.IndicadorSegurancaRepository;
+import repository.LogRepository;
 import repository.MunicipioRepository;
 import repository.OcorrenciaSegurancaRepository;
 import repository.PopulacaoMunicipioRepository;
@@ -25,16 +26,22 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Credenciais da sessão do AWS Academy
-        System.setProperty("aws.accessKeyId", "ASIA3STB4UX4X7LAK7RH");
-        System.setProperty("aws.secretAccessKey", "3+uYlnQXgWMyyyHXg2YdmHJ4LObBBzMv8IKyrdIU");
-        System.setProperty("aws.sessionToken", "IQoJb3JpZ2luX2VjEB8aCXVzLXdlc3QtMiJGMEQCIFgD+piixApe0pUxk6OGbOkODC39WWvhMC4ZlR+Owu3UAiAk0qspgMYObba/YK8gJ80is98ZEK8EH7KraSnebRN/8iq8Agjo//////////8BEAAaDDc5NTg0Nzk5MjgyNSIM3RDw3nTeUZt4n3r0KpACbe13DMYD4nxvR9LS1kIwr2JA+DaezTwYMeEKl9QVkgKEQ9CHPUseLcFTFzcYUl+URX/OuISFSGdp5lgarmxqp5nAgFqfx8mSU8irq2y6gF9/qRrezhFaJnD3KX41jwYhIi4MklGJQBGH/OEhoHnrq0PSG+28aGNfN/me3IW6k1UI9OIHi9R7GIXoPDXTFqb8RkRXvnXNqLKV5nPebpUjywffw6J+UVq2A7NPsgWLPWZGIza8lECxYtQr58Kyxs3Bl2XNDwfhPoFQBJoYRIM+LaubA0D2O/UaLPHgDfiDg1abEg8+y7HCRLQdrVJEVXp2DIH46RW+ekeUvRQSBhhFzs8d7rO4h/xVbYKTPuc3jQAw/tTt0AY6ngFwbMdDxQafHOAlZjUp/pGqpEMrtxVOUDBjSuJdFVigOjJeU8To+qdhjqGY5b8Y6Tk1tgewCIHO+PrmdF+uOxzVWooao+jWtnYzCYHjxn/Ts0HvDAg8dsMs6VRxecL7oQIjFLPHGkAlmgta/KgOG7KxvZ0yA+fibL/3R9up+M379XF5SzhfkdScyRClmCeRhmwY9F7ifzJOukAW92nvcQ==");
+        // Credenciais da sessão do AWS Academy.
+        // Defina as variáveis de ambiente AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+        // e AWS_SESSION_TOKEN antes de executar. NUNCA versione credenciais no código.
+        System.setProperty("aws.accessKeyId", System.getenv("AWS_ACCESS_KEY_ID"));
+        System.setProperty("aws.secretAccessKey", System.getenv("AWS_SECRET_ACCESS_KEY"));
+        System.setProperty("aws.sessionToken", System.getenv("AWS_SESSION_TOKEN"));
 
-        LeitorExcel leitor = new LeitorExcel();
-        MunicipioRepository municipioRepo = new MunicipioRepository();
-        OcorrenciaSegurancaRepository ocorrenciaRepo = new OcorrenciaSegurancaRepository();
-        IndicadorSegurancaRepository indicadorRepo = new IndicadorSegurancaRepository();
-        PopulacaoMunicipioRepository populacaoRepo = new PopulacaoMunicipioRepository();
+        // Agregação: um único LogRepository compartilhado entre o leitor e todos
+        // os repositórios (ciclo de vida independente de cada um deles).
+        LogRepository logRepo = new LogRepository();
+
+        LeitorExcel leitor = new LeitorExcel(logRepo);
+        MunicipioRepository municipioRepo = new MunicipioRepository(logRepo);
+        OcorrenciaSegurancaRepository ocorrenciaRepo = new OcorrenciaSegurancaRepository(logRepo);
+        IndicadorSegurancaRepository indicadorRepo = new IndicadorSegurancaRepository(logRepo);
+        PopulacaoMunicipioRepository populacaoRepo = new PopulacaoMunicipioRepository(logRepo);
 
         S3Client s3Client = new S3Provider().getS3Client();
         String bucketName = "17042026-safety";

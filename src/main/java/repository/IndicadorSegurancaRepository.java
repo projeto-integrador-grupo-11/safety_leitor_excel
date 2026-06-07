@@ -2,29 +2,23 @@ package repository;
 
 import conection.Conexao;
 import model.IndicadorSeguranca;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 
-public class IndicadorSegurancaRepository {
+public class IndicadorSegurancaRepository extends RepositorioBase {
 
-    private static final Logger log = LogManager.getLogger(IndicadorSegurancaRepository.class);
+    public IndicadorSegurancaRepository() {
+        super();
+    }
 
-    private final LogRepository logRepo = new LogRepository();
+    public IndicadorSegurancaRepository(LogRepository logRepo) {
+        super(logRepo);
+    }
 
     public void limpar() {
-        try (Connection conn = Conexao.getConexao();
-             Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("DELETE FROM indicador_seguranca");
-            log.info("Tabela indicador_seguranca limpa antes da carga.");
-        } catch (Exception e) {
-            log.error("Erro ao limpar indicador_seguranca", e);
-            logRepo.salvar("WARN", "Erro ao limpar indicador_seguranca: " + e.getMessage());
-        }
+        limpar("indicador_seguranca");
     }
 
     public void salvarLista(List<IndicadorSeguranca> indicadores) {

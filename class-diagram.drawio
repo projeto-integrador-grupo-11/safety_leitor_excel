@@ -1,0 +1,81 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0">
+  <diagram id="uml-classico-1" name="UML Classico">
+    <mxGraphModel dx="774" dy="1531" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1080" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontStyle=1;fontSize=16;" value="Diagrama de Classes (UML Classico)" vertex="1">
+          <mxGeometry height="30" width="420" x="104" y="-60" as="geometry" />
+        </mxCell>
+        <mxCell id="leitor" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;LeitorExcel&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;service&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;- logRepo: LogRepository&lt;hr/&gt;+ ler(...): List&lt;Municipio&gt;&lt;br/&gt;+ lerIdhmMunicipios(...): List&lt;Municipio&gt;&lt;br/&gt;+ lerSeguranca(...): List&lt;OcorrenciaSeguranca&gt;&lt;br/&gt;+ lerIndicadores(...): List&lt;IndicadorSeguranca&gt;&lt;br/&gt;+ lerPopulacaoMunicipios(...): List&lt;PopulacaoMunicipio&gt;" vertex="1">
+          <mxGeometry height="190" width="380" x="40" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="repoLog" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;LogRepository&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;repository&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;&lt;hr/&gt;+ salvar(nivel, mensagem): void" vertex="1">
+          <mxGeometry height="120" width="250" x="104" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="repoMun" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;MunicipioRepository&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;repository&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;- logRepo: LogRepository&lt;hr/&gt;+ limpar(): void&lt;br/&gt;+ salvarLista(municipios): void" vertex="1">
+          <mxGeometry height="140" width="270" x="90" y="870" as="geometry" />
+        </mxCell>
+        <mxCell id="repoOco" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;OcorrenciaSegurancaRepository&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;repository&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;- logRepo: LogRepository&lt;br/&gt;- TAMANHO_LOTE: int&lt;hr/&gt;+ limpar(): void&lt;br/&gt;+ salvarLista(ocorrencias): void" vertex="1">
+          <mxGeometry height="160" width="300" x="1050" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="repoInd" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;IndicadorSegurancaRepository&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;repository&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;- logRepo: LogRepository&lt;hr/&gt;+ limpar(): void&lt;br/&gt;+ salvarLista(indicadores): void" vertex="1">
+          <mxGeometry height="140" width="270" x="1062" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="repoPop" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;PopulacaoMunicipioRepository&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;repository&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;- logRepo: LogRepository&lt;br/&gt;- TAMANHO_LOTE: int&lt;hr/&gt;+ limpar(): void&lt;br/&gt;+ salvarLista(populacoes): void" vertex="1">
+          <mxGeometry height="160" width="300" x="1040" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="mMun" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;Municipio&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;- id: Long&lt;br/&gt;- uf: String&lt;br/&gt;- nome: String&lt;br/&gt;- idhmGeral: Double&lt;br/&gt;- renda: Double&lt;br/&gt;- educacao: Double&lt;br/&gt;- longevidade: Double&lt;hr/&gt;+ getters/setters" vertex="1">
+          <mxGeometry height="220" width="290" x="80" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="mOco" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;OcorrenciaSeguranca&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;- uf: String&lt;br/&gt;- nomeMunicipio: String&lt;br/&gt;- evento: String&lt;br/&gt;- anoRef: int&lt;br/&gt;- mesRef: int&lt;br/&gt;- qtdVitimas: int&lt;hr/&gt;+ getters/setters" vertex="1">
+          <mxGeometry height="210" width="300" x="610" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="mInd" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;IndicadorSeguranca&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;- uf: String&lt;br/&gt;- tipo: String&lt;br/&gt;- ano: int&lt;br/&gt;- quantidade: int&lt;hr/&gt;+ getters/setters" vertex="1">
+          <mxGeometry height="160" width="280" x="580" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="mPop" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;PopulacaoMunicipio&lt;/b&gt;&lt;br/&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;entity&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr/&gt;- uf: String&lt;br/&gt;- nomeMunicipio: String&lt;br/&gt;- populacao: int&lt;br/&gt;- ano: int&lt;hr/&gt;+ getters/setters" vertex="1">
+          <mxGeometry height="160" width="320" x="600" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="d7" edge="1" parent="1" source="leitor" style="endArrow=open;endFill=0;dashed=1;html=1;strokeColor=#2e7d32;" target="repoLog" value="&amp;lt;&amp;lt;log&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d8" edge="1" parent="1" source="leitor" style="endArrow=open;endFill=0;dashed=1;html=1;strokeColor=#2e7d32;" target="mMun" value="&amp;lt;&amp;lt;creates&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d9" edge="1" parent="1" source="leitor" style="endArrow=open;endFill=0;dashed=1;html=1;strokeColor=#2e7d32;" target="mOco" value="&amp;lt;&amp;lt;creates&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="d10" edge="1" parent="1" source="leitor" style="endArrow=open;endFill=0;dashed=1;html=1;strokeColor=#2e7d32;exitX=1;exitY=1;exitDx=0;exitDy=0;" target="mInd" value="&amp;lt;&amp;lt;creates&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="510" />
+              <mxPoint x="430" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="d11" edge="1" parent="1" source="leitor" style="endArrow=open;endFill=0;dashed=1;html=1;strokeColor=#2e7d32;" target="mPop" value="&amp;lt;&amp;lt;creates&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" edge="1" parent="1" source="repoMun" style="endArrow=none;html=1;strokeWidth=1.5;" target="mMun" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" edge="1" parent="1" source="repoOco" style="endArrow=none;html=1;strokeWidth=1.5;" target="mOco" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" edge="1" parent="1" source="repoInd" style="endArrow=none;html=1;strokeWidth=1.5;" target="mInd" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" edge="1" parent="1" source="repoPop" style="endArrow=none;html=1;strokeWidth=1.5;" target="mPop" value="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oM8PwxLIxpAtiVh-iwqb-6" edge="1" parent="1" source="oM8PwxLIxpAtiVh-iwqb-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="mInd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oM8PwxLIxpAtiVh-iwqb-3" parent="1" style="shape=rectangle;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=6;" value="&lt;b&gt;indicadorQualidade&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;&amp;lt;&amp;lt;enum&amp;gt;&amp;gt;&lt;/font&gt;&lt;hr&gt;EXCELENTE&lt;div&gt;BOA]&lt;/div&gt;&lt;div&gt;RUIM&lt;/div&gt;&lt;div&gt;PESSIMA&lt;/div&gt;" vertex="1">
+          <mxGeometry height="220" width="290" x="575" y="920" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
